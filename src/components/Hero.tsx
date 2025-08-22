@@ -18,7 +18,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="text-xs font-medium text-muted-foreground uppercase tracking-[0.2em]"
+        className="text-xs font-medium text-white/70 uppercase tracking-[0.2em]"
       >
         Let's create something big
       </motion.p>
@@ -40,7 +40,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25, duration: 0.3 }}
-        className="text-6xl font-serif font-normal text-foreground tracking-[-0.02em] leading-tight"
+        className="text-6xl font-serif font-normal text-white tracking-[-0.02em] leading-tight"
         style={{ fontFamily: 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif' }}
       >
         Enhance your business

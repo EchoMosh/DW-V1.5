@@ -40,9 +40,9 @@ All colors MUST be HSL.
     --radius: 1rem;
 
     /* Glass morphism system */
-    --glass-bg: 215 25% 97% / 0.05;
-    --glass-border: 215 25% 97% / 0.1;
-    --glass-highlight: 215 25% 97% / 0.1;
+    --glass-bg: 215 25% 97% / 0.12;
+    --glass-border: 215 25% 97% / 0.2;
+    --glass-highlight: 215 25% 97% / 0.15;
     
     /* Gradients */
     --gradient-radial: radial-gradient(ellipse at center, hsl(230 35% 12%) 0%, hsl(230 40% 6%) 100%);
