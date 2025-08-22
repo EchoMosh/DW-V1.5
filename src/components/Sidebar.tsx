@@ -1,6 +1,6 @@
 /**
- * Left sidebar with brand, navigation, features, history and social sharing
- * Fixed width sidebar with glass morphism styling
+ * Premium glass sidebar with outer shell, inset panel, and glass morphism styling
+ * Fixed width w-[300px] with scrollable middle section and pinned bottom card
  */
 
 import { 
@@ -14,8 +14,6 @@ import {
   ChevronRight,
   User
 } from "lucide-react"
-import { Glass } from "@/components/ui/Glass"
-import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 
 const Sidebar = () => {
@@ -36,135 +34,196 @@ const Sidebar = () => {
     "What KPIs should I track for my..."
   ]
 
-  const avatars = [
-    { id: 1, color: "bg-blue-500" },
-    { id: 2, color: "bg-green-500" },
-    { id: 3, color: "bg-purple-500" }
-  ]
-
   return (
     <motion.aside 
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed left-0 top-0 h-screen w-80 bg-sidebar border-r border-sidebar-border p-4 flex flex-col gap-6 overflow-hidden"
+      className="fixed left-0 top-0 h-dvh w-[300px] p-2"
     >
-      {/* Brand Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <div className="w-4 h-4 bg-white rounded-sm opacity-90" />
-          </div>
-          <span className="text-lg font-semibold text-sidebar-foreground">Elevatr</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-fast"
-          >
-            <Search size={16} />
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-fast"
-          >
-            <Bell size={16} />
-          </motion.button>
-        </div>
-      </div>
-
-      {/* New Chat Button */}
-      <Glass variant="pill" className="p-1">
-        <Button className="w-full bg-glass-highlight hover:bg-glass-highlight/80 text-sidebar-foreground border-0 rounded-full font-medium">
-          <MessageCircle size={16} className="mr-2" />
-          New Chat
-        </Button>
-      </Glass>
-
-      {/* Features Section */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-          Features
-        </h3>
-        <div className="space-y-1">
-          {features.map((feature) => (
-            <motion.button
-              key={feature.label}
-              whileHover={{ scale: 1.02, x: 4 }}
-              whileTap={{ scale: 0.98 }}
-              className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-fast ${
-                feature.active 
-                  ? "bg-sidebar-accent text-sidebar-primary-foreground shadow-soft" 
-                  : "hover:bg-sidebar-accent/50 text-sidebar-foreground"
-              }`}
-            >
-              <feature.icon size={18} />
-              <span className="text-sm font-medium">{feature.label}</span>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      {/* History Section */}
-      <div className="space-y-3 flex-1 overflow-hidden">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            History
-          </h3>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className="text-xs text-muted-foreground hover:text-sidebar-foreground transition-colors duration-fast flex items-center gap-1"
-          >
-            See all
-            <ChevronRight size={12} />
-          </motion.button>
-        </div>
-        <div className="space-y-2 overflow-y-auto pr-2 scrollbar-hide">
-          {history.map((item, index) => (
-            <motion.button
-              key={index}
-              whileHover={{ scale: 1.01, x: 2 }}
-              className="w-full text-left p-2 rounded-lg text-sm text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent/30 transition-all duration-fast line-clamp-1"
-            >
-              {item}
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      {/* Share Card */}
-      <Glass variant="card" className="p-4 space-y-3">
-        <div className="relative flex items-center justify-center">
-          {/* X Logo */}
-          <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-            <div className="w-6 h-6 text-white font-bold flex items-center justify-center">
-              X
+      {/* Outer Shell */}
+      <div className="h-full rounded-[28px] bg-[#0b1220] bg-gradient-to-b from-white/2 to-black/10 p-2">
+        {/* Inset Glass Panel */}
+        <div className="h-full rounded-[22px] bg-white/5 backdrop-blur-[12px] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] p-4 flex flex-col">
+          
+          {/* Brand Row */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              {/* App Tile */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-[8px] border border-white/15 shadow-[0_8px_24px_rgba(0,0,0,0.35),inset_0_0_30px_rgba(255,255,255,0.08)] flex items-center justify-center"
+              >
+                <div className="w-6 h-6 bg-white rounded-lg opacity-90" />
+              </motion.div>
+              
+              {/* Wordmark */}
+              <span className="font-serif text-lg text-white">Elevatr</span>
+            </div>
+            
+            {/* Icon Buttons */}
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-9 w-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/8 focus:outline-none focus:ring-2 focus:ring-white/20 flex items-center justify-center text-white/70 hover:text-white"
+                aria-label="Search"
+              >
+                <Search size={16} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-9 w-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/8 focus:outline-none focus:ring-2 focus:ring-white/20 flex items-center justify-center text-white/70 hover:text-white"
+                aria-label="Notifications"
+              >
+                <Bell size={16} />
+              </motion.button>
             </div>
           </div>
-          
-          {/* Orbiting Avatars */}
-          {avatars.map((avatar, index) => (
-            <motion.div
-              key={avatar.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className={`absolute w-8 h-8 rounded-full ${avatar.color} border-2 border-sidebar-background flex items-center justify-center`}
-              style={{
-                transform: `rotate(${index * 120}deg) translateX(24px) rotate(-${index * 120}deg)`
-              }}
-            >
-              <User size={14} className="text-white" />
-            </motion.div>
-          ))}
-        </div>
 
-        <Button className="w-full bg-gradient-warning hover:opacity-90 text-black font-medium rounded-xl shadow-glow">
-          Share result in X
-        </Button>
-      </Glass>
+          {/* New Chat CTA */}
+          <motion.button
+            whileHover={{ 
+              scale: 1.02, 
+              y: -1,
+              boxShadow: "0 0 24px rgba(99,179,237,0.35)" 
+            }}
+            whileTap={{ scale: 0.98 }}
+            className="h-11 rounded-full bg-white/10 backdrop-blur-[8px] border border-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_16px_rgba(0,0,0,0.35)] flex items-center gap-3 px-4 mb-6 focus:outline-none focus:ring-2 focus:ring-white/25"
+          >
+            <div className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center">
+              <MessageCircle size={12} className="text-white/90" />
+            </div>
+            <span className="text-white/90 font-medium">New Chat</span>
+          </motion.button>
+
+          {/* Scrollable Middle Section */}
+          <div className="flex-1 overflow-y-auto scrollbar-none space-y-4">
+            {/* Features Section */}
+            <div>
+              <h3 className="text-xs text-white/60 uppercase tracking-[0.12em] mb-2 mt-4">
+                FEATURES
+              </h3>
+              <div className="space-y-1">
+                {features.map((feature) => (
+                  <motion.button
+                    key={feature.label}
+                    whileHover={{ 
+                      scale: feature.active ? 1.01 : 1.02,
+                      boxShadow: feature.active ? undefined : "0 0 12px rgba(255,255,255,0.1)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full h-12 rounded-2xl px-3 flex items-center gap-3 text-left transition-all duration-200 ${
+                      feature.active 
+                        ? "bg-white/8 border border-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]" 
+                        : "hover:bg-white/6 hover:border hover:border-white/10"
+                    }`}
+                  >
+                    {/* Icon Chip */}
+                    <motion.div 
+                      whileHover={{ scale: 1.03, opacity: 1 }}
+                      className={`w-7 h-7 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center ${
+                        feature.active ? "shadow-[0_0_8px_rgba(255,255,255,0.15)]" : ""
+                      }`}
+                    >
+                      <feature.icon size={14} className={feature.active ? "text-white" : "text-white/80"} />
+                    </motion.div>
+                    <span className={`text-[15px] leading-6 font-medium ${
+                      feature.active ? "text-white" : "text-white/80"
+                    }`}>
+                      {feature.label}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* History Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2 mt-4">
+                <h3 className="text-xs text-white/60 uppercase tracking-[0.12em]">
+                  HISTORY
+                </h3>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  className="text-xs text-white/60 hover:text-white/90 transition-colors flex items-center gap-1"
+                >
+                  See all
+                  <ChevronRight size={12} />
+                </motion.button>
+              </div>
+              <div className="space-y-2">
+                {history.map((item, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.01, x: 2 }}
+                    className="w-full text-left h-9 px-2 rounded-lg text-[14px] text-white/70 hover:text-white/90 hover:bg-white/5 transition-all duration-200 truncate"
+                  >
+                    {item}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Share Card (Pinned) */}
+          <div className="mt-auto pt-4">
+            <div className="rounded-2xl bg-white/6 backdrop-blur-[10px] border border-white/12 shadow-[inset_0_-40px_60px_rgba(255,255,255,0.05)] p-4 space-y-4">
+              {/* Avatar Cluster */}
+              <div className="relative flex items-center justify-center h-16">
+                {/* Central X Logo */}
+                <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center relative z-10">
+                  <div className="w-6 h-6 text-white font-bold flex items-center justify-center">
+                    X
+                  </div>
+                </div>
+                
+                {/* Orbiting Avatars */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="absolute w-6 h-6 rounded-full bg-blue-500 border-2 border-white/20 flex items-center justify-center"
+                  style={{ transform: 'rotate(0deg) translateX(20px) rotate(0deg)' }}
+                >
+                  <User size={10} className="text-white" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="absolute w-6 h-6 rounded-full bg-green-500 border-2 border-white/20 flex items-center justify-center"
+                  style={{ transform: 'rotate(120deg) translateX(20px) rotate(-120deg)' }}
+                >
+                  <User size={10} className="text-white" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute w-6 h-6 rounded-full bg-purple-500 border-2 border-white/20 flex items-center justify-center"
+                  style={{ transform: 'rotate(240deg) translateX(20px) rotate(-240deg)' }}
+                >
+                  <User size={10} className="text-white" />
+                </motion.div>
+              </div>
+
+              {/* CTA Button */}
+              <motion.button
+                whileHover={{ 
+                  y: -1,
+                  boxShadow: "0 8px 32px rgba(255,213,74,0.4)" 
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full h-12 rounded-full bg-gradient-to-r from-[#FFD54A] to-[#FFB300] text-[#1A1200] font-medium shadow-[0_4px_16px_rgba(255,179,0,0.25)] focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
+              >
+                Share result in X
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </div>
     </motion.aside>
   )
 }
