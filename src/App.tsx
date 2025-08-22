@@ -6,18 +6,29 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Launchpad from "./pages/Launchpad";
 import NotFound from "./pages/NotFound";
+import DraperAI from "./pages/DraperAI";
+import Approvals from "./pages/Approvals";
+import InfluencerLookup from "./pages/InfluencerLookup";
+import Pipeline from "./pages/Pipeline";
+import AppLayout from "./layouts/AppLayout";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/launchpad" element={<Launchpad />} />
+          <Route element={<AppLayout />}>
+            <Route path="/launchpad" element={<Launchpad />} />
+            <Route path="/draper-ai" element={<DraperAI />} />
+            <Route path="/approvals" element={<Approvals />} />
+            <Route path="/influencer-lookup" element={<InfluencerLookup />} />
+            <Route path="/pipeline" element={<Pipeline />} />
+          </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

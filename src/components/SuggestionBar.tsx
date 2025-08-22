@@ -3,11 +3,10 @@
  * Features glass morphism styling and interactive animations
  */
 
-import { Lock, Mic, Zap } from "lucide-react"
-import { Glass } from "@/components/ui/Glass"
+import { Send } from "lucide-react"
 import { motion } from "framer-motion"
 
-const SuggestionBar = () => {
+const SuggestionBar = ({ placeholder = "Ask Anything..." }: { placeholder?: string }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -15,49 +14,34 @@ const SuggestionBar = () => {
       transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
       className="w-full max-w-2xl mx-auto"
     >
-      <Glass variant="pill" className="p-2 flex items-center gap-3 bg-white/20">
-        {/* Status Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20">
-          <Lock size={12} className="text-white/80" />
-          <span className="text-xs font-medium text-white/80">
-            Full potential unlocked
-          </span>
-        </div>
-
+      <div
+        className="
+          p-2 flex items-center gap-3
+          rounded-2xl
+          bg-[rgba(0,0,0,0.19)]
+          border border-[rgba(0,0,0,0.08)]
+          shadow-[0_4px_30px_rgba(0,0,0,0.1)]
+          backdrop-blur-[5.5px]
+        "
+      >
         {/* Input Area */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative px-3">
           <input
             type="text"
-            placeholder="Ask Anything..."
-            className="w-full bg-transparent text-white placeholder:text-white/60 text-sm focus:outline-none py-2"
+            placeholder={placeholder}
+            className="w-full bg-transparent text-white/90 placeholder:text-white/70 text-sm focus:outline-none py-2"
           />
         </div>
 
-        {/* Subscription Status */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/20">
-          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-xs font-medium text-green-400">
-            Subscription Active
-          </span>
-          <div className="w-16 h-1.5 rounded-full bg-green-500/30 overflow-hidden">
-            <motion.div 
-              initial={{ width: "0%" }}
-              animate={{ width: "85%" }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="h-full bg-green-400 rounded-full"
-            />
-          </div>
-        </div>
-
-        {/* Voice Input */}
+        {/* Send Button */}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-fast"
+          className="p-2 rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all duration-150"
         >
-          <Mic size={16} />
+          <Send size={16} />
         </motion.button>
-      </Glass>
+      </div>
     </motion.div>
   )
 }

@@ -5,7 +5,15 @@
 
 import { motion } from "framer-motion"
 
-const Hero = () => {
+const Hero = ({
+  title = "Draper Ai",
+  subtitle = "Real-time campaign intelligence at your fingertips.",
+  showIcon = true,
+}: {
+  title?: string
+  subtitle?: string
+  showIcon?: boolean
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -14,26 +22,20 @@ const Hero = () => {
       className="text-center space-y-6"
     >
       {/* Kicker Text */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="text-xs font-medium text-white uppercase tracking-[0.2em]"
-      >
-        Let's create something big
-      </motion.p>
 
       {/* App Icon */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.15, duration: 0.3 }}
-        className="flex justify-center"
-      >
-        <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-glow">
-          <div className="w-8 h-8 bg-white rounded-lg opacity-90" />
-        </div>
-      </motion.div>
+      {showIcon && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15, duration: 0.3 }}
+          className="flex justify-center"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-glow">
+            <div className="w-8 h-8 bg-white rounded-lg opacity-90" />
+          </div>
+        </motion.div>
+      )}
 
       {/* Main Heading */}
       <motion.h1
@@ -43,8 +45,18 @@ const Hero = () => {
         className="text-6xl font-serif font-normal text-white tracking-[-0.02em] leading-tight"
         style={{ fontFamily: 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif' }}
       >
-        Enhance your business
+        {title}
       </motion.h1>
+      {subtitle && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-xs font-medium text-white uppercase tracking-[0.2em]"
+        >
+          {subtitle}
+        </motion.p>
+      )}
     </motion.div>
   )
 }

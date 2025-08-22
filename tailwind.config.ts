@@ -94,7 +94,8 @@ export default {
 				'scale-in': 'scale-in var(--duration-fast) var(--ease-out)',
 				'shimmer': 'shimmer 2s ease-in-out infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'aurora': 'aurora 60s linear infinite'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -148,6 +149,14 @@ export default {
 					},
 					'100%': { 
 						backgroundPosition: 'calc(200px + 100%) 0' 
+					}
+				},
+				'aurora': {
+					from: {
+						backgroundPosition: '50% 50%, 50% 50%'
+					},
+					to: {
+						backgroundPosition: '350% 50%, 350% 50%'
 					}
 				}
 			},
