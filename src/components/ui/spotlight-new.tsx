@@ -32,7 +32,7 @@ export const Spotlight = ({
   return (
     <div
       className={cn(
-        "pointer-events-none absolute -top-40 left-0 z-[1] h-screen w-screen overflow-hidden",
+        "pointer-events-none absolute -top-40 left-0 z-0 h-screen w-screen overflow-hidden",
         className
       )}
     >
