@@ -19,9 +19,9 @@ type SpotlightProps = {
 export const Spotlight = ({
   className,
   fill = "white",
-  gradientFirst = "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 85%, .25) 0, hsla(210, 100%, 55%, .08) 50%, hsla(210, 100%, 45%, .02) 80%)",
-  gradientSecond = "radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .20) 0, hsla(210, 100%, 55%, .08) 80%, transparent 100%)",
-  gradientThird = "radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .15) 0, hsla(210, 100%, 45%, .06) 80%, transparent 100%)",
+  gradientFirst = "radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 85%, .08) 0, hsla(210, 100%, 55%, .03) 50%, hsla(210, 100%, 45%, .01) 80%)",
+  gradientSecond = "radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .06) 0, hsla(210, 100%, 55%, .02) 80%, transparent 100%)",
+  gradientThird = "radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .04) 0, hsla(210, 100%, 45%, .01) 80%, transparent 100%)",
   translateY = -350,
   width = 800,
   height = 1600,
@@ -32,7 +32,7 @@ export const Spotlight = ({
   return (
     <div
       className={cn(
-        "pointer-events-none fixed inset-0 z-0 h-screen w-screen",
+        "pointer-events-none fixed inset-0 z-0 w-full h-full",
         className
       )}
     >
@@ -73,7 +73,7 @@ export const Spotlight = ({
       <div
         className="absolute inset-0 animate-pulse"
         style={{
-          background: "radial-gradient(40% 40% at 60% 40%, hsla(217, 91%, 59%, .3) 0, hsla(217, 91%, 70%, .1) 50%, transparent 100%)",
+          background: "radial-gradient(40% 40% at 60% 40%, hsla(217, 91%, 59%, .08) 0, hsla(217, 91%, 70%, .03) 50%, transparent 100%)",
           transform: `translateY(${translateY * 0.7}px) translateX(${xOffset * 2}px)`,
           width: `${width * 0.6}px`,
           height: `${height * 0.8}px`,
@@ -84,7 +84,7 @@ export const Spotlight = ({
       <div
         className="absolute inset-0 animate-pulse"
         style={{
-          background: "radial-gradient(35% 35% at 40% 60%, hsla(217, 91%, 59%, .25) 0, hsla(217, 91%, 85%, .08) 60%, transparent 100%)",
+          background: "radial-gradient(35% 35% at 40% 60%, hsla(217, 91%, 59%, .06) 0, hsla(217, 91%, 85%, .02) 60%, transparent 100%)",
           transform: `translateY(${translateY * 1.2}px) translateX(-${xOffset * 1.5}px)`,
           width: `${width * 0.5}px`,
           height: `${height * 1.1}px`,
