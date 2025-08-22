@@ -11,7 +11,7 @@ import { ActionCards } from "@/components/ActionCards"
 
 const Launchpad = () => {
   return (
-    <div className="min-h-screen bg-gradient-radial bg-noise relative overflow-hidden">
+    <div className="h-dvh bg-gradient-radial bg-noise relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-noise opacity-50 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -22,8 +22,8 @@ const Launchpad = () => {
       <TopNav />
       
       {/* Main Content */}
-      <main className="pl-80 pt-16 min-h-screen">
-        <div className="p-8 flex flex-col items-center justify-center min-h-screen space-y-12">
+      <main className="pl-80 pt-16 h-dvh">
+        <div className="p-8 h-full flex flex-col items-center justify-center space-y-12">
           <Hero />
           <SuggestionBar />
           <ActionCards />
