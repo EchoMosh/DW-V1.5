@@ -63,20 +63,12 @@ const Sidebar = () => {
       className="w-[300px] h-dvh p-3"
     >
       <div className="
-        relative h-full rounded-[28px] 
-        bg-[linear-gradient(160deg,#0b1220_0%,#0a0f1a_60%,#070c14_100%)]
-        shadow-[0_30px_60px_-20px_rgba(0,0,0,.6)]
-        before:absolute before:inset-0 before:rounded-[28px]
-        before:pointer-events-none
-        before:shadow-[inset_0_0_0_1px_rgba(255,255,255,.06),inset_0_60px_120px_-60px_rgba(99,179,237,.12)]
+        h-full rounded-[22px]
+        bg-white/8 backdrop-blur-[12px]
+        border border-white/15
+        shadow-[inset_0_1px_0_rgba(255,255,255,.18),0_8px_24px_rgba(0,0,0,.35)]
+        flex flex-col
       ">
-        <div className="
-          m-2 h-[calc(100%-16px)] rounded-[22px]
-          bg-white/5 backdrop-blur-[12px]
-          border border-white/10
-          shadow-[inset_0_1px_0_rgba(255,255,255,.18)]
-          flex flex-col
-        ">
           
           {/* Brand Row */}
           <header className="flex items-center justify-between px-4 pt-4 pb-3">
@@ -243,7 +235,6 @@ const Sidebar = () => {
             </div>
           </footer>
         </div>
-      </div>
     </motion.aside>
   )
 }
