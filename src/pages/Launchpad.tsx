@@ -22,7 +22,7 @@ const Launchpad = () => {
       <TopNav />
       
       {/* Main Content */}
-      <main className="pl-80 pt-16 h-dvh overflow-y-auto">
+      <main className="pl-[300px] pt-16 h-dvh overflow-y-auto">
         <div className="p-8 flex flex-col items-center justify-center min-h-full space-y-12">
           <Hero />
           <SuggestionBar />

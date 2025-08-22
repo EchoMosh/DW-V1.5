@@ -19,7 +19,7 @@ const TopNav = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 right-0 left-80 z-50 h-16 flex items-center justify-end px-6 gap-6 border-b border-glass-border bg-background/80 backdrop-blur-glass"
+      className="fixed top-0 right-0 left-[300px] z-50 h-16 flex items-center justify-end px-6 gap-6 border-b border-glass-border bg-background/80 backdrop-blur-glass"
     >
       {/* Navigation Links */}
       <nav className="flex items-center gap-1">
