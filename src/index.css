@@ -40,7 +40,7 @@ All colors MUST be HSL.
     --radius: 1rem;
 
     /* Glass morphism system */
-    --glass-bg: 215 25% 97% / 0.12;
+    --glass-bg: 215 25% 97% / 0.25;
     --glass-border: 215 25% 97% / 0.2;
     --glass-highlight: 215 25% 97% / 0.15;
     

@@ -55,17 +55,17 @@ const ActionCards = () => {
               transition: { duration: 0.15 } 
             }}
           >
-            <Glass variant="card" className="p-6 h-full flex flex-col justify-between group cursor-pointer">
+            <Glass variant="card" className="p-6 h-full flex flex-col justify-between group cursor-pointer bg-white/15">
               {/* Header */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-muted-foreground px-2 py-1 rounded-full bg-muted/30">
+                  <span className="text-xs font-medium text-white/70 px-2 py-1 rounded-full bg-white/20">
                     {card.date}
                   </span>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-full bg-glass-highlight hover:bg-primary/20 text-muted-foreground hover:text-primary transition-all duration-fast"
+                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all duration-fast"
                   >
                     <ChevronRight size={16} />
                   </motion.button>
@@ -91,10 +91,10 @@ const ActionCards = () => {
 
               {/* Content */}
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold text-foreground leading-snug group-hover:text-primary transition-colors duration-fast">
+                <h3 className="text-sm font-semibold text-white leading-snug group-hover:text-blue-300 transition-colors duration-fast">
                   {card.title}
                 </h3>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/70">
                   {card.description}
                 </p>
               </div>
@@ -116,8 +116,8 @@ const ActionCards = () => {
             whileHover={{ scale: 1.2 }}
             className={`w-2 h-2 rounded-full transition-all duration-fast cursor-pointer ${
               index === 0 
-                ? "bg-primary shadow-glow" 
-                : "bg-muted hover:bg-muted-foreground"
+                ? "bg-blue-400 shadow-glow" 
+                : "bg-white/30 hover:bg-white/50"
             }`}
           />
         ))}

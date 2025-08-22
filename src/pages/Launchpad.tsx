@@ -35,8 +35,7 @@ const Launchpad = () => {
       
       {/* Main Content */}
       <main className="pl-[300px] h-dvh overflow-y-auto relative z-10">
-        <div className="p-8 flex flex-col items-center justify-center min-h-full space-y-12 bg-red-500/10 border-4 border-red-500">
-          <div className="text-white text-2xl">DEBUG: Main Content Container</div>
+        <div className="p-8 flex flex-col items-center justify-center min-h-full space-y-12">
           <Hero />
           <SuggestionBar />
           <ActionCards />

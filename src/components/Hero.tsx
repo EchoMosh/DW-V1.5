@@ -18,7 +18,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="text-xs font-medium text-white/70 uppercase tracking-[0.2em]"
+        className="text-xs font-medium text-white uppercase tracking-[0.2em]"
       >
         Let's create something big
       </motion.p>
