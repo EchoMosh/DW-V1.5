@@ -3,16 +3,38 @@
  * Shows launchpad, venture desk, help links and user avatar with PRO badge
  */
 
-import { Settings, User } from "lucide-react"
+import { Settings, User, LogOut } from "lucide-react"
 import { Glass } from "@/components/ui/Glass"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useAuth } from "@/contexts/AuthContext"
 import { motion } from "framer-motion"
 
 const TopNav = () => {
+  const { user, signOut } = useAuth()
+  
   const navItems = [
     { label: "Launchpad", href: "#", active: true },
     { label: "VentureDesk", href: "#" },
     { label: "Help & Support", href: "#" }
   ]
+
+  const handleSignOut = async () => {
+    await signOut()
+  }
+
+  // Get user initials for avatar fallback
+  const getUserInitials = (email: string) => {
+    return email.split('@')[0].slice(0, 2).toUpperCase()
+  }
 
   return (
     <motion.header 
@@ -49,20 +71,51 @@ const TopNav = () => {
         <Settings size={18} />
       </motion.button>
 
-      {/* User Avatar with PRO Badge */}
-      <motion.div 
-        whileHover={{ scale: 1.05 }}
-        className="relative"
-      >
-        <Glass variant="pill" className="p-1 pr-3 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-electric flex items-center justify-center">
-            <User size={16} className="text-white" />
-          </div>
-          <span className="text-xs font-medium px-2 py-1 rounded-full bg-gradient-warning text-black">
-            PRO
-          </span>
-        </Glass>
-      </motion.div>
+      {/* User Avatar with Dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="relative cursor-pointer"
+          >
+            <Glass variant="pill" className="p-1 pr-3 flex items-center gap-2">
+              <Avatar className="w-8 h-8">
+                <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user?.email}`} />
+                <AvatarFallback className="bg-gradient-electric text-white text-xs">
+                  {user?.email ? getUserInitials(user.email) : 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-xs font-medium px-2 py-1 rounded-full bg-gradient-warning text-black">
+                PRO
+              </span>
+            </Glass>
+          </motion.div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">My Account</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {user?.email}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </motion.header>
   )
 }

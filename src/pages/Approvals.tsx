@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { useAuth } from "@/contexts/AuthContext"
 
 import { Glass } from "@/components/ui/Glass"
 import { Badge } from "@/components/ui/badge"
@@ -39,48 +40,7 @@ type Influencer = {
   rejectionReason?: string
 }
 
-const initialInfluencers: Influencer[] = [
-  {
-    id: "INF-1",
-    name: "Ava North",
-    handle: "@avanorth",
-    platform: "Instagram",
-    followers: 256000,
-    engagement: 3.2,
-    category: "Lifestyle",
-    status: "pending",
-  },
-  {
-    id: "INF-2",
-    name: "TechTom",
-    handle: "@techtom",
-    platform: "YouTube",
-    followers: 183000,
-    engagement: 5.8,
-    category: "Tech",
-    status: "pending",
-  },
-  {
-    id: "INF-3",
-    name: "FitMia",
-    handle: "@fit.mia",
-    platform: "TikTok",
-    followers: 920000,
-    engagement: 8.9,
-    category: "Fitness",
-    status: "pending",
-  },
-  {
-    id: "INF-4",
-    name: "ChefRay",
-    handle: "@raycooks",
-    platform: "Instagram",
-    followers: 74000,
-    engagement: 4.1,
-    category: "Food",
-    status: "pending",
-  },
-]
+// Removed static data - will fetch from API
 
 const rejectOptions = [
   "Audience mismatch",
@@ -94,12 +54,101 @@ const rejectOptions = [
 ] as const
 
 export default function Approvals() {
-  const [rows, setRows] = useState<Influencer[]>(initialInfluencers)
+  const { user, session } = useAuth()
+  const [rows, setRows] = useState<Influencer[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState("")
   const [selected, setSelected] = useState<Influencer | null>(null)
   const [rejectReason, setRejectReason] = useState<string>("")
   const [rejectNotes, setRejectNotes] = useState<string>("")
   const [rejectOpen, setRejectOpen] = useState(false)
+
+  // Fetch influencers from the webhook
+  useEffect(() => {
+    const fetchInfluencers = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Prepare user data to send with the request
+        const userData = {
+          userId: user?.id || 'anonymous',
+          email: user?.email || 'no-email',
+          userMetadata: user?.user_metadata || {},
+          sessionId: session?.access_token || 'no-session',
+          timestamp: new Date().toISOString(),
+          isAuthenticated: !!(user && session),
+        }
+        
+        console.log('Sending user data:', userData)
+        
+        const requestBody = {
+          user: userData,
+          action: 'get_influencers_for_review',
+        }
+        
+        console.log('Request body:', requestBody)
+        
+        const response = await fetch('https://dreamwell.app.n8n.cloud/webhook/review-and-approve', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(session?.access_token && { 'Authorization': `Bearer ${session.access_token}` }),
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+        console.log('Response status:', response.status)
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const data = await response.json()
+        console.log('Response data:', data)
+        
+        // Transform the API response to match our Influencer type
+        // Map the actual JSON structure from the webhook
+        const influencers: Influencer[] = Array.isArray(data) ? data.map((item: any, index: number) => {
+          // Parse followers count - handle both string and number formats
+          let followersCount = 0;
+          if (item.followers && item.followers !== 'N/A') {
+            const followersStr = item.followers.toString().toLowerCase();
+            if (followersStr.includes('k')) {
+              followersCount = parseFloat(followersStr.replace('k', '')) * 1000;
+            } else if (followersStr.includes('m')) {
+              followersCount = parseFloat(followersStr.replace('m', '')) * 1000000;
+            } else {
+              followersCount = parseInt(followersStr) || 0;
+            }
+          }
+
+          return {
+            id: item.id || `INF-${index + 1}`,
+            name: `${item.first_name || ''} ${item.last_name || ''}`.trim() || 'Unknown',
+            handle: item.email || '@unknown', // Using email as handle since no social handle provided
+            platform: (item.platform && item.platform !== 'N/A') ? item.platform : 'Unknown',
+            followers: followersCount,
+            engagement: 0, // No engagement data in the provided structure
+            category: (item.niche && item.niche !== 'N/A') ? item.niche : 'General',
+            status: 'pending', // Default status
+            rejectionReason: undefined,
+          };
+        }) : []
+
+        setRows(influencers)
+      } catch (err) {
+        console.error('Error fetching influencers:', err)
+        setError(err instanceof Error ? err.message : 'Failed to fetch influencers')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchInfluencers()
+  }, [user, session]) // Re-fetch when user or session changes
 
   const filtered = useMemo(() => {
     if (!query) return rows
@@ -107,15 +156,23 @@ export default function Approvals() {
     return rows.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
-        r.handle.toLowerCase().includes(q) ||
         r.platform.toLowerCase().includes(q) ||
-        r.category.toLowerCase().includes(q)
+        r.category.toLowerCase().includes(q) ||
+        r.status.toLowerCase().includes(q) ||
+        formatFollowers(r.followers).toLowerCase().includes(q) ||
+        (r.rejectionReason && r.rejectionReason.toLowerCase().includes(q))
     )
   }, [rows, query])
 
   function approve(id: string) {
     setRows((prev) =>
       prev.map((r) => (r.id === id ? { ...r, status: "approved", rejectionReason: undefined } : r))
+    )
+  }
+
+  function undoAction(id: string) {
+    setRows((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: "pending", rejectionReason: undefined } : r))
     )
   }
 
@@ -154,7 +211,7 @@ export default function Approvals() {
               <Label htmlFor="search" className="sr-only">Search</Label>
               <Input
                 id="search"
-                placeholder="Search by name, handle, platform, category..."
+                placeholder="Search by name, platform, followers, category, status..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="bg-white/5 border-white/10 placeholder:text-white/40"
@@ -165,17 +222,37 @@ export default function Approvals() {
           <Separator className="my-4 bg-white/10" />
 
           <div className="relative overflow-x-auto">
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-center space-y-2">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
+                  <p className="text-muted-foreground">Loading influencers...</p>
+                </div>
+              </div>
+            ) : error ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-center space-y-2">
+                  <p className="text-red-400">Error loading influencers</p>
+                  <p className="text-sm text-muted-foreground">{error}</p>
+                  <Button 
+                    onClick={() => window.location.reload()} 
+                    variant="outline"
+                    className="border-white/20 bg-white/5 hover:bg-white/10"
+                  >
+                    Retry
+                  </Button>
+                </div>
+              </div>
+            ) : (
               <Table className="min-w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Influencer</TableHead>
-                    <TableHead>Handle</TableHead>
-                    <TableHead>Platform</TableHead>
-                    <TableHead className="text-right">Followers</TableHead>
-                    <TableHead className="text-right">Engagement</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="w-[200px]">Influencer</TableHead>
+                    <TableHead className="w-[120px]">Platform</TableHead>
+                    <TableHead className="w-[150px] text-right pr-8">Followers</TableHead>
+                    <TableHead className="w-[200px] pl-8">Category</TableHead>
+                    <TableHead className="w-[120px] min-w-[120px]">Status</TableHead>
+                    <TableHead className="w-[200px] text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -183,44 +260,54 @@ export default function Approvals() {
                     filtered.map((r) => (
                       <TableRow key={r.id}>
                         <TableCell className="font-medium">{r.name}</TableCell>
-                        <TableCell className="text-muted-foreground">{r.handle}</TableCell>
                         <TableCell>{r.platform}</TableCell>
-                        <TableCell className="text-right tabular-nums">{formatFollowers(r.followers)}</TableCell>
-                        <TableCell className="text-right">{r.engagement.toFixed(1)}%</TableCell>
-                        <TableCell>{r.category}</TableCell>
+                        <TableCell className="text-right tabular-nums pr-8">{formatFollowers(r.followers)}</TableCell>
+                        <TableCell className="pl-8">{r.category}</TableCell>
                         <TableCell>
                           <StatusBadge status={r.status} reason={r.rejectionReason} />
                         </TableCell>
                         <TableCell className="text-right space-x-2">
-                          <Button
-                            size="sm"
-                            disabled={r.status !== "pending"}
-                            className="bg-emerald-500 hover:bg-emerald-500/90 text-white"
-                            onClick={() => approve(r.id)}
-                          >
-                            Approve
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={r.status !== "pending"}
-                            className="border-white/20 bg-white/5 hover:bg-white/10"
-                            onClick={() => openReject(r)}
-                          >
-                            Reject
-                          </Button>
+                          {r.status === "pending" ? (
+                            <>
+                              <Button
+                                size="sm"
+                                className="bg-emerald-500 hover:bg-emerald-500/90 text-white"
+                                onClick={() => approve(r.id)}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-white/20 bg-white/5 hover:bg-white/10"
+                                onClick={() => openReject(r)}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-white/20 bg-white/5 hover:bg-white/10"
+                              onClick={() => undoAction(r.id)}
+                            >
+                              Undo
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
-                        No results.
+                      <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                        {rows.length === 0 ? "No influencers found." : "No results match your search."}
                       </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
               </Table>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-4">
@@ -306,12 +393,12 @@ function StatusBadge({ status, reason }: { status: Status; reason?: string }) {
     return <Badge className="bg-emerald-500/20 text-emerald-200 border border-emerald-300/20">Approved</Badge>
   if (status === "rejected")
     return (
-      <div className="flex items-center gap-2">
+      <div className="w-full">
         <Badge className="bg-rose-500/20 text-rose-200 border border-rose-300/20">Rejected</Badge>
         {reason ? (
-          <span className="text-xs text-white/60 max-w-[220px] truncate" title={reason}>
+          <div className="text-xs text-white/60 mt-1 truncate max-w-[100px]" title={reason}>
             {reason}
-          </span>
+          </div>
         ) : null}
       </div>
     )

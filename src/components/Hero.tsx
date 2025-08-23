@@ -9,17 +9,30 @@ const Hero = ({
   title = "Draper Ai",
   subtitle = "Real-time campaign intelligence at your fingertips.",
   showIcon = true,
+  isHidden = false,
 }: {
   title?: string
   subtitle?: string
   showIcon?: boolean
+  isHidden?: boolean
 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-      className="text-center space-y-6"
+      animate={{ 
+        opacity: 1, 
+        y: isHidden ? -250 : 0,
+        scale: isHidden ? 0.5 : 1,
+      }}
+      transition={{ 
+        duration: 0.6, 
+        ease: [0.4, 0.0, 0.2, 1], // Cubic bezier for super smooth animation
+        delay: 0
+      }}
+      className="text-center"
+      style={{
+        transformOrigin: 'center bottom',
+      }}
     >
       {/* Kicker Text */}
 
@@ -40,8 +53,14 @@ const Hero = ({
       {/* Main Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25, duration: 0.3 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0 
+        }}
+        transition={{ 
+          delay: isHidden ? 0 : 0.25, 
+          duration: 0.3
+        }}
         className="text-6xl font-serif font-normal text-white tracking-[-0.02em] leading-tight"
         style={{ fontFamily: 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif' }}
       >
@@ -50,8 +69,13 @@ const Hero = ({
       {subtitle && (
         <motion.p
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          animate={{ 
+            opacity: 1
+          }}
+          transition={{ 
+            delay: isHidden ? 0 : 0.2,
+            duration: 0.3
+          }}
           className="text-xs font-medium text-white uppercase tracking-[0.2em]"
         >
           {subtitle}

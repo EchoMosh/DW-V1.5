@@ -216,8 +216,8 @@ export function KanbanBoard({ id, className, children }: KanbanBoardProps) {
       ref={setNodeRef}
       variant="card"
       className={cn(
-        // Glassmorphic column styling
-        "flex min-h-[320px] flex-col overflow-hidden border-white/20 bg-white/5 p-2 shadow-lg shadow-black/10 dark:border-white/10 dark:bg-white/5",
+        // Glassmorphic column styling with fixed height
+        "flex h-[600px] max-h-[600px] flex-col overflow-hidden border-white/20 bg-white/5 p-2 shadow-lg shadow-black/10 dark:border-white/10 dark:bg-white/5",
         "backdrop-blur-lg",
         className
       )}
@@ -262,7 +262,7 @@ export function KanbanCards<T extends KanbanItem = KanbanItem>({
   const itemIds = React.useMemo(() => items.map((i) => i.id), [items]);
 
   return (
-    <div className={cn("mt-1 flex flex-col gap-2", className)}>
+    <div className={cn("mt-1 flex flex-col gap-2 overflow-y-auto flex-1 pr-1", className)}>
       <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
         {items.map((item) => (
           <React.Fragment key={item.id}>{children(item)}</React.Fragment>
